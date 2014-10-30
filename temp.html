@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="UTF=8">
+		<title>Untitled Doc</title>
+		<script src="jquery.js"></script>
+		<style type="text/css">
+		
+			#container{
+				height: 100px;
+				width: 100px;
+				position: relative;
+				float: left;
+				outline: 2px solid black;
+			}
+			
+			.grass{
+				height: 10px;
+				width: 10px;
+				position: relative;
+				float: left;
+				background-color: green;
+			}
+			
+			.dirt{
+				height: 10px;
+				width: 10px;
+				position: relative;
+				float: left;
+				background-color: tan;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<div id="container"></div>
+		
+		<script>
+			var container = document.getElementById("container");
+			var mapArray=[
+			[0,0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0,0],
+			[0,1,1,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0,0],
+			[0,1,1,1,1,0,0,0,0,0],
+			[0,1,1,1,1,0,0,0,0,0],
+			[0,1,1,1,1,0,0,0,0,0],
+			[0,1,1,1,1,0,0,0,0,0],
+			[0,1,1,1,1,0,0,0,0,0],
+			[0,1,1,1,1,0,0,0,0,0]
+			];
+			
+			for(var i=0; i < mapArray.length; i++){
+				for(var j=0; j < mapArray[i].length; j++){
+					var tile = document.createElement("div");
+					if(parseInt(mapArray[i][j]) == 0){
+						tile.className = "grass";
+						container.appendChild(tile);
+					}
+					if(parseInt(mapArray[i][j]) == 1){
+						tile.className = "dirt";
+						container.appendChild(tile);
+					}
+				}
+			}
+		</script>
+	</body>
+</html>

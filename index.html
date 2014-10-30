@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<html>
+<!-- Kulvinder Lotay
+	 Introduction To Programming
+	 Project 4 -->
+	<script src="jquery.js" type="text/javascript"></script>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+		<meta name="author" 	content="Kulvinder Lotay" />
+		<title>Escape Plan v0.7</title>
+		<link rel="stylesheet" type="text/css" href="mystyle.css">
+		<link rel="stylesheet" type="text/css" href="elementstyle.css">
+		<link rel="stylesheet" type="text/css" href="mapstyle.css">	
+	</head>
+	<body id="page_body" onload="initialize_page()">
+		<h1 class="header" style="font-family: 'Impact';">Escape Plan</h1>
+		<!-- Overriding the color and font-weight attribute of the header class for h2 -->
+		<p>
+			Contact me at
+			<a href="mailto:kulvinder.lotay1@marist.edu?Subject=Go%20Gunners">kulvinder.lotay1@marist.edu</a> 
+			if you have any problems
+		</p>
+		<hr />
+		<br />
+		<div>
+		<!-- Some objects are read only as they are only needed to display information, and should not be editable by the user/player -->
+			Current Location:
+			<input class="textbox"
+				   readonly
+				   type="text"
+				   id="txtLocation"
+				   name="txtLocation"
+				   value="Prison Cell">
+			<br />
+			<br />
+			<textarea class="textbox" readonly rows="15" cols="80" id="ta_Main"></textarea>
+			<br />
+			<br />
+			<input type="button"
+				   class="btn"
+				   id="btn0"
+				   value="North"
+				   onclick="btnNorth_Click()">
+			<br />
+			<input type="button"
+				   class="btn"
+				   id="btn3"
+				   value="West"
+				   onclick="btnWest_Click()">
+			<input type="button"
+				   class="btn"
+				   id="btn1"
+				   value="East"
+				   onclick="btnEast_Click()">
+			<br />
+			<input type="button"
+				   class="btn"
+				   id="btn2"
+				   value="South"
+				   onclick="btnSouth_Click()">
+			<br />
+			<br />
+			Command:
+			<input class="textbox"
+				   placeholder="Type command here"
+				   type="text"
+				   id="txtCommand"
+				   name="txtCommand"
+				   list="txtCommand_list"
+				   onkeydown="enterKey_check(event)">
+			<datalist id="txtCommand_list"></datalist>
+			<input type="button"
+				   id="btn_Enter"
+				   value="Enter"
+				   onclick="btnEnter_click()">
+			<br />
+			Points:
+			<input class="textbox"
+				   readonly
+				   type="text"
+				   id="txtPoints"
+				   value=0>
+			<br />
+			<br />
+			<h3>Map:</h3>
+			<br />
+			<br />
+			<table id="map_table">
+				<tr>
+					<td></td>
+					<td></td>
+					<th id="loc11">Parking Lot</th>
+				</tr>
+				<tr>
+					<td></td>
+					<th id="loc8">Warden's Office</th>
+					<th id="loc9">Security Desk</th>
+					<th id="loc10">Solitary</th>
+				</tr>
+				<tr>
+					<td></td>
+					<th id="loc7">Hallway</th>
+					<td></td>
+				</tr>
+				<tr>
+					<th id="loc4">Infirmary</th>
+					<th id="loc5">Visiting Room</th>
+					<th id="loc6">Gymnasium</th>
+				</tr>
+				<tr>
+					<th id="loc1">Dining Room</th>
+					<th id="loc2">Multi-purpose Room</th>
+					<th id="loc3">Courtyard</th>
+				</tr>
+				<tr></tr>
+				<tr>
+					<td></td>
+					<th id="loc0" style="background: #E80000;">Prison Cell</th>
+					<td></td>
+				</tr>
+			</table>
+		</div>
+		<!--<div id="container"></div>-->
+		<br />
+		<br />
+		<p>
+			<a href="http://validator.w3.org/#validate_by_input">Validate as HTML5</a>
+		</p>
+		<script type="text/javascript" src="myscript.js"></script>
+	</body>
+</html>

@@ -1,0 +1,33 @@
+.textbox { 
+    background: white; 
+    border: 1px double #DDD; 
+    border-radius: 5px; 
+    box-shadow: 0 0 5px #333; 
+    color: #666; 
+    outline: none;  
+	}
+.bg0 {background-image: url(http://1.bp.blogspot.com/-A4mL9GrVKkY/T-CFQDFUR1I/AAAAAAAAAFE/CVbh9va9rl8/s1600/JailCell_03comp.jpg); background-size: 150%;}
+.bg1 {background-image: url(http://goodmenproject.com/wp-content/uploads/2012/11/Prison-bars.jpg); background-size: 100%;}
+.bg2 {background-image: url();}
+.bg3 {background-image: url();}
+.bg4 {background-image: url();}
+.bg5 {background-image: url();}
+.bg6 {background-image: url();}
+.bg7 {background-image: url();}
+.btn {
+	border-radius: 5px;
+	background: rgba(0,0,0,.5);
+	outline: none;
+	color: white;
+}
+.btn:disabled {
+	color: grey;
+}
+.header {
+	font-weight: bold;
+	font-family: "Calibri", sans-serif;
+	text-shadow: 2px 2px 4px #000000;
+	}
+.footer {padding-left: 25px;
+	font-style: italic;
+	}

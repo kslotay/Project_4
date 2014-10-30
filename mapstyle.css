@@ -1,0 +1,62 @@
+#container{
+	width:320px;
+	height:320px;
+	outline:1px solid white;
+	background: rgba(232,232,232,.9);
+}
+.cell{
+	height:40px;
+	width:40px;
+	position: relative;
+	float:left;
+	background-color: black;
+}
+.dining{
+	height:40px;
+	width:40px;
+	position: relative;
+	float:left;
+	background-color: white;
+}
+.multi_room{
+	height:40px;
+	width:40px;
+	position: relative;
+	float:left;
+	background-color: #e8e8e8;
+}
+.courtyard{
+	height:40px;
+	width:40px;
+	position: relative;
+	float:left;
+	background-color: green;
+}
+.infirmary{
+	height:20px;
+	width:20px;
+	position: relative;
+	float:left;
+	background-color: white;
+}
+.visiting_room{
+	height:40px;
+	width:40px;
+	position: relative;
+	float:left;
+	background-color: #e8e8e8;
+}
+.gymnasium{
+	height:40px;
+	width:40px;
+	position: relative;
+	float:left;
+	background-color: black;
+}
+.warden_office{
+	height:40px;
+	width:40px;
+	position: relative;
+	float:left;
+	background-color: red;
+}
