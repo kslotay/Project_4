@@ -87,9 +87,9 @@ var Player = {//Inventory names
 	
 	//Enable/disable direction buttons according to current location	
 	function btn_set() {
-		switch (Location.current_loc) {
+		switch (current_loc) {
 			case 0:
-				if (Location.loc_locked[Location.current_loc] === true) {
+				if (loc[current_loc].loc_locked === true) {
 					btn_disable("all");
 				}
 				else {
@@ -120,7 +120,7 @@ var Player = {//Inventory names
 				btn_disable("btn0","btn1");
 				break;
 			case 7:
-				if ((Location.loc_visited[Location.current_loc] > 1) && (Location.loc_locked[8] === true)) {
+				if ((loc[current_loc].loc_visited > 1) && (loc[8].loc_locked === true)) {
 					btn_enable("btn2");
 					btn_disable("btn0","btn1","btn3");
 				}
@@ -186,7 +186,7 @@ var Player = {//Inventory names
 		}
 		if (type === 0) {
 			if (num === 0) {
-				msg_box.value = message[num] + Location.loc[Location.current_loc] + "\n\n" + Location.loc_desc_used()[Location.current_loc] + "\n\n\n" + msg_box.value;
+				msg_box.value = message[num] + loc[current_loc].loc_name + "\n\n" + loc[current_loc].loc_desc_used() + "\n\n\n" + msg_box.value;
 			}
 			else if (num === 9) {
 				msg_box.value = message[num];
@@ -267,13 +267,13 @@ var Player = {//Inventory names
 	//Updates location value in location box
 	function update_Loc() {
 		var loc_box = document.getElementById("txtLocation");
-		loc_box.value = Location.loc[Location.current_loc];
+		loc_box.value = loc[current_loc].loc_name;
 	}
 
 	//Updates points value if location has not been visited before
 	function update_Points() {
 		var txt_points = document.getElementById("txtPoints");
-		if (Location.loc_visited[Location.current_loc] === 0) {
+		if (loc[current_loc].loc_visited === 0) {
 			Gameplay.points += 5;
 			txt_points.value = Gameplay.points;
 		}
@@ -281,7 +281,7 @@ var Player = {//Inventory names
 
 	//Changes current map location color
 	function update_Map(x) {
-		var map_loc_id = "loc" + Location.current_loc.toString();
+		var map_loc_id = "loc" + current_loc.toString();
 		var map_loc = document.getElementById(map_loc_id);
 		switch (x) {
 			case 0:
@@ -297,27 +297,27 @@ var Player = {//Inventory names
 	function edit_desc(locx) {
 		switch (locx) {
 			case 0:
-				Location.loc_desc0[locx] = Location.loc_desc_alt[locx];
+				loc[locx].loc_desc0 = loc[locx].loc_desc_alt;
 				break;
 			case 1:
-				Location.loc_desc0[locx] = Location.loc_desc_alt[locx];
-				Location.loc_desc1[locx] = Location.loc_desc_alt[locx];
-				Location.loc_desc2[locx] = Location.loc_desc_alt[locx];
+				loc[locx].loc_desc0 = loc[locx].loc_desc_alt;
+				loc[locx].loc_desc1 = loc[locx].loc_desc_alt;
+				loc[locx].loc_desc2 = loc[locx].loc_desc_alt;
 				break;
 			case 3:
-				Location.loc_desc2[locx] = Location.loc_desc_alt[locx];
+				loc[locx].loc_desc2 = loc[locx].loc_desc_alt;
 				break;
 			case 5:
-				Location.loc_desc2[locx] = Location.loc_desc_alt[locx];
+				loc[locx].loc_desc2 = loc[locx].loc_desc_alt;
 				break;
 			case 6:
-				Location.loc_desc2[locx] = Location.loc_desc_alt[locx];
+				loc[locx].loc_desc2 = loc[locx].loc_desc_alt;
 				break;
 			case 7:
-				Location.loc_desc2[locx] = Location.loc_desc_alt[locx];
+				loc[locx].loc_desc2 = loc[locx].loc_desc_alt;
 			case 8:
-				Location.loc_desc0[locx] = Location.loc_desc_alt[locx];
-				Location.loc_desc1[locx] = Location.loc_desc_alt[locx];
+				loc[locx].loc_desc0 = loc[locx].loc_desc_alt;
+				loc[locx].loc_desc1 = loc[locx].loc_desc_alt;
 				break;
 		}
 	}
@@ -340,7 +340,7 @@ function player_Win() {
 function initialize_page() {
 	populate_CmdList();
 	//Location.draw_Map();
-	Location.current_loc = 0;
+	current_loc = 0;
 	changeBGImage(0);
 	btn_set();
 	update_display_msg(1);
@@ -362,31 +362,31 @@ function initialize_page() {
 	//Executes on look command
 	function cmd_Look() {
 		var msg_box = document.getElementById("ta_Main");
-		msg_box.value = Location.loc_desc_used()[Location.current_loc] + "\n\n" + msg_box.value;
+		msg_box.value = loc[current_loc].loc_desc_used() + "\n\n" + msg_box.value;
 	}
 
 	//Executes on take command
 	function cmd_Take() {
 		var msg_box = document.getElementById("ta_Main");
-		switch (Location.current_loc) {
+		switch (current_loc) {
 			case 0:
-				if (Location.loc_visited[Location.current_loc] === 0) {
+				if (loc[current_loc].loc_visited === 0) {
 					update_display_msg(2);
-					edit_desc(Location.current_loc);
+					edit_desc(current_loc);
 					Player.inventory_q[1]++;
 					break;
 				}
 			case 1:
-				if (Location.loc_desc_used()[Location.current_loc] != Location.loc_desc_alt[Location.current_loc]) {
+				if (loc[current_loc].loc_desc_used() != loc[current_loc].loc_desc_alt) {
 					update_display_msg(3);
-					edit_desc(Location.current_loc);
+					edit_desc(current_loc);
 					Player.inventory_q[0]++;
 					break;
 				}
 			case 6:
-				if ((Location.loc_visited[Location.current_loc] > 1) && (Location.loc_desc_used()[Location.current_loc] != Location.loc_desc_alt[Location.current_loc])) {
+				if ((loc[current_loc].loc_visited > 1) && (loc[current_loc].loc_desc_used() != loc[current_loc].loc_desc_alt)) {
 					update_display_msg(2);
-					edit_desc(Location.current_loc);
+					edit_desc(current_loc);
 					Player.inventory_q[1]++;
 					break;
 				}
@@ -398,34 +398,34 @@ function initialize_page() {
 	//Executes on unlock command
 	function cmd_Unlock() {
 		var msg_box = document.getElementById("ta_Main");
-		switch (Location.current_loc) {
+		switch (current_loc) {
 			case 0:
 				//If location is the prison cell, and the player has lock pick(s) in inventory, unlock door
-				if ((Location.loc_locked[Location.current_loc] === true) && (Player.inventory_q[1] != 0)) {
+				if ((loc[current_loc].loc_locked === true) && (Player.inventory_q[1] != 0)) {
 					update_display_msg(4);
-					Location.loc_locked[Location.current_loc] = false;
-					Location.loc_visited[Location.current_loc]++;
+					loc[current_loc].loc_locked = false;
+					loc[current_loc].loc_visited++;
 					Player.inventory_q[1]--;
 					break;
 				}
-				else if ((Location.loc_locked[Location.current_loc] === true) && (Player.inventory_q[1] === 0)) {
+				else if ((loc[current_loc].loc_locked === true) && (Player.inventory_q[1] === 0)) {
 					cmd_Look();
 					gameplayError(6);
 					break;
 				}
 			case 7:
 				//If location is visiting room, and the player has lock pick(s) in inventory, unlocks door to Warden's office
-				if ((Location.loc_visited[Location.current_loc] > 1) && (Player.inventory_q[1] != 0)) {
-					Location.loc_locked[8] = false;
-					if (Location.loc_visited[8] < 2) {
+				if ((loc[current_loc].loc_visited > 1) && (Player.inventory_q[1] != 0)) {
+					loc[8].loc_locked = false;
+					if (loc[8].loc_visited < 2) {
 						edit_desc(8);
 					}
 					update_display_msg(5);
-					edit_desc(7);
+					edit_desc(current_loc);
 					Player.inventory_q[1]--;
 					break;
 				}
-				else if ((Location.loc_visited[Location.current_loc] > 1) && (Player.inventory_q[1] === 0)) {
+				else if ((loc[current_loc].loc_visited > 1) && (Player.inventory_q[1] === 0)) {
 					gameplayError(3);
 					break;
 				}
@@ -449,9 +449,9 @@ function initialize_page() {
 			Player.inventory_q[0]--;
 		}
 		//Otherwise if player is currently in the dining room and does not have any food in inventory, eat directly
-		else if ((Location.current_loc === 1) && (Location.loc_desc_used()[Location.current_loc] != Location.loc_desc_alt[Location.current_loc]) && (Player.inventory_q[0] == 0)) {
+		else if ((current_loc === 1) && (loc[current_loc].loc_desc_used() != loc[current_loc].loc_desc_alt) && (Player.inventory_q[0] == 0)) {
 			update_display_msg(8);
-			edit_desc(Location.current_loc);
+			edit_desc(current_loc);
 		}
 		else {
 			gameplayError(4);
@@ -470,7 +470,7 @@ function initialize_page() {
 
 	//Executed on climb command
 	function cmd_Climb() {
-		if ((Location.current_loc === 3) && (Location.loc_desc_used()[Location.current_loc] === Location.loc_desc_alt[Location.current_loc])) {
+		if ((current_loc === 3) && (loc[current_loc].loc_desc_used() === loc[current_loc].loc_desc_alt)) {
 			player_Win();
 		}
 		else {
@@ -488,7 +488,7 @@ function initialize_page() {
 	
 	//Executed on listen command
 	function cmd_Listen() {
-		if ((Location.loc_visited[Location.current_loc] > 1) && (Location.current_loc === 4)) {
+		if ((loc[current_loc].loc_visited > 1) && (current_loc === 4)) {
 			update_display_msg(8);
 			breach_c_Fence();
 		}
@@ -502,12 +502,12 @@ function param_change() {
 	update_Loc();
 	update_Map(1);
 	update_Points();
-	Location.loc_visited[Location.current_loc]++;
+	loc[current_loc].loc_visited++;
 	update_display_msg(0);
 	btn_set();
 	
-	if ((Location.loc_visited[Location.current_loc] > 1) && (Location.current_loc === 7) && (Location.loc_desc2[Location.current_loc] != Location.loc_desc_alt[Location.current_loc])) {
-		Location.loc_locked[8] = true;
+	if ((loc[current_loc].loc_visited > 1) && (current_loc === 7) && (loc[current_loc].loc_desc2 != loc[current_loc].loc_desc_alt)) {
+		loc[8].loc_locked = true;
 		breach_c_Fence();
 	}
 }
@@ -516,52 +516,52 @@ function param_change() {
 	//Direction button functions
 	function btnNorth_Click() {
 		var msg_box = document.getElementById("ta_Main");
-		switch(Location.current_loc) {
+		switch(current_loc) {
 			case 0:
-				if (Location.loc_locked[Location.current_loc] === true) {
+				if (loc[current_loc].loc_locked === true) {
 					cmd_Look();
 					navigationError(0);
 				}
 				else {
 					update_Map(0);
-					Location.current_loc = 2;
+					current_loc = 2;
 					param_change();
 				}
 				break;
 			case 1:
 				update_Map(0);
-				Location.current_loc = 4;
+				current_loc = 4;
 				param_change();
 				break;
 			case 2:
 				update_Map(0);
-				Location.current_loc = 5;
+				current_loc = 5;
 				param_change();
 				break;
 			case 3:
 				update_Map(0);
-				Location.current_loc = 6;
+				current_loc = 6;
 				param_change();
 				break;
 			case 5:
 				update_Map(0);
-				Location.current_loc = 7;
+				current_loc = 7;
 				param_change();
 				break;
 			case 7:
-				if (Location.loc_locked[8] === true) {
+				if (loc[8].loc_locked === true) {
 					navigationError(0);
 					gameplayError(7);
 				}
 				else {
 					update_Map(0);
-					Location.current_loc = 8;
+					current_loc = 8;
 					param_change();
 				}
 				break;
 			case 9:
 				update_Map(0);
-				Location.current_loc = 11;
+				current_loc = 11;
 				param_change();
 				break;
 			default:
@@ -570,35 +570,35 @@ function param_change() {
 	}
 
 	function btnEast_Click() {
-		switch(Location.current_loc) {
+		switch(current_loc) {
 			case 1:
 				update_Map(0);
-				Location.current_loc = 2;
+				current_loc = 2;
 				param_change();
 				break;
 			case 2:
 				update_Map(0);
-				Location.current_loc = 3;
+				current_loc = 3;
 				param_change();
 				break;
 			case 4:
 				update_Map(0);
-				Location.current_loc = 5;
+				current_loc = 5;
 				param_change();
 				break;
 			case 5:
 				update_Map(0);
-				Location.current_loc = 6;
+				current_loc = 6;
 				param_change();
 				break;
 			case 8:
 				update_Map(0);
-				Location.current_loc = 9;
+				current_loc = 9;
 				param_change();
 				break;
 			case 9:
 				update_Map(0);
-				Location.current_loc = 10;
+				current_loc = 10;
 				param_change();
 				break;
 			default:
@@ -607,40 +607,40 @@ function param_change() {
 	}
 
 	function btnSouth_Click() {
-		switch(Location.current_loc) {
+		switch(current_loc) {
 			case 2:
 				update_Map(0);
-				Location.current_loc = 0;
+				current_loc = 0;
 				param_change();
 				break;
 			case 4:
 				update_Map(0);
-				Location.current_loc = 1;
+				current_loc = 1;
 				param_change();
 				break;
 			case 5:
 				update_Map(0);
-				Location.current_loc = 2;
+				current_loc = 2;
 				param_change();
 				break;
 			case 6:
 				update_Map(0);
-				Location.current_loc = 3;
+				current_loc = 3;
 				param_change();
 				break;
 			case 7:
 				update_Map(0);
-				Location.current_loc = 5;
+				current_loc = 5;
 				param_change();
 				break;
 			case 8:
 				update_Map(0);
-				Location.current_loc = 7;
+				current_loc = 7;
 				param_change();
 				break;
 			case 11:
 				update_Map(0);
-				Location.current_loc = 9;
+				current_loc = 9;
 				param_change();
 				break;
 			default:
@@ -649,35 +649,35 @@ function param_change() {
 	}
 
 	function btnWest_Click() {
-		switch(Location.current_loc) {
+		switch(current_loc) {
 			case 2:
 				update_Map(0);
-				Location.current_loc = 1;
+				current_loc = 1;
 				param_change();
 				break;
 			case 3:
 				update_Map(0);
-				Location.current_loc = 2;
+				current_loc = 2;
 				param_change();
 				break;
 			case 5:
 				update_Map(0);
-				Location.current_loc = 4;
+				current_loc = 4;
 				param_change();
 				break;
 			case 6:
 				update_Map(0);
-				Location.current_loc = 5;
+				current_loc = 5;
 				param_change();
 				break;
 			case 9:
 				update_Map(0);
-				Location.current_loc = 8;
+				current_loc = 8;
 				param_change();
 				break;
 			case 10:
 				update_Map(0);
-				Location.current_loc = 9;
+				current_loc = 9;
 				param_change();
 				break;
 			default:
