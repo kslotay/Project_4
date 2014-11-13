@@ -1,4 +1,4 @@
-//LOCATION VARIABLES:
+//Location Object
 	function Location() {
 		this.loc_name = "";
 		this.loc_visited = 0;
@@ -22,7 +22,8 @@
 														}
 										};
 	}
-	//All location variables/properties are stored in the Location object
+
+//Different game locations based on the Location object
 	var prison_cell = new Location();
 	prison_cell.loc_name = "Prison Cell";
 	prison_cell.loc_locked = true;
@@ -144,5 +145,7 @@
 	parking_lot.loc_desc_wman = "";
 	parking_lot.loc_desc_007 = "";
 	
+	//Array containing a list of all game locations, used to call the respective location object in myscript.js
 	var loc = [prison_cell, dining_room, multi_room, courtyard, infirmary, visiting_room, gymnasium, hallway, warden_office, security_desk, solitary, parking_lot];
+	//Left undefined as it is initialized on page load
 	var current_loc;

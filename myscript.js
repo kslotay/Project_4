@@ -1,7 +1,9 @@
+//Gameplay object containing commands and other gameplay parameters
 var Gameplay = {cmd:["n", "e", "s", "w", "look", "take", "unlock", "help", "climb", "eat", "inventory", "clear", "listen","cheatmode","sarcasm","w**dman","007"], points:0, cheatmode:0};
+//Added command descriptions, used for help
 Gameplay.cmd_desc = ["Go North","Go East","Go South","Go West","Look around","Take object","Unlock door","Shows help","Climb","Eat food","Check Inventory","Clear display box","Listen to radio (if applicable)"];
 
-//INVENTORY VARIABLES:
+//Player Object containing player related variables/parameters such as inventory:
 var Player = {//Inventory names
 			  inventory:["food", "lock pick(s)"],
 			  //Inventory quantity
@@ -9,7 +11,7 @@ var Player = {//Inventory names
 	
 			
 //GENERAL USE FUNCTIONS			
-	//Changes the page background image
+	//Changes the page background image, will be used for different game modes
 	function changeBGImage(whichImage) {
 		document.getElementById("page_body").className = "bg" + whichImage;
 	}
@@ -211,6 +213,7 @@ var Player = {//Inventory names
 		update_Display(msg, 0);
 	}
 	
+	//Experimenting with map drawing using tiling
 	/*Location.draw_Map = function() {
 		var mapContainer = document.getElementById("container");
 		
@@ -328,6 +331,7 @@ var Player = {//Inventory names
 		}
 	}
 	
+	//Function that breaches courtyard fence, from where the player can then escape from.
 	function breach_c_Fence() {
 		edit_desc(3);
 	}
@@ -453,6 +457,7 @@ function initialize_page() {
 		var cmd_list = "";
 		var msg_box = document.getElementById("ta_Main");
 		var txt_Command = document.getElementById("txtCommand");
+		//Loop to search and display all available commands and their descriptions.
 		for (i = (Gameplay.cmd.length - 1); i >= 0; i--) {
 			cmd_list = Gameplay.cmd[i] + " - " + Gameplay.cmd_desc[i] + "\n" + cmd_list;
 		}
@@ -712,16 +717,20 @@ function param_change() {
 		}
 	}
 
+	//Implementing new gamemodes, not yet complete
 	function cmd_Cheatmode() {
 		Gameplay.cheatmode = 1;
 	}
 	
+	//Sarcasm game mode, WIP
 	function cmd_Sarcasm() {
 	}
 	
+	//Wman game mode, WIP
 	function cmd_wman() {
 	}
 	
+	//James Bond game mode, WIP
 	function cmd_007() {
 	}
 	
