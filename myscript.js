@@ -1,6 +1,5 @@
-var Gameplay = {};
-	
-var Gameplay = {cmd:["n", "e", "s", "w", "look", "take", "unlock", "help", "climb", "eat", "inventory", "clear", "listen"], points:0};
+var Gameplay = {cmd:["n", "e", "s", "w", "look", "take", "unlock", "help", "climb", "eat", "inventory", "clear", "listen","cheatmode","sarcasm","w**dman","007"], points:0, cheatmode:0};
+Gameplay.cmd_desc = ["Go North","Go East","Go South","Go West","Look around","Take object","Unlock door","Shows help","Climb","Eat food","Check Inventory","Clear display box","Listen to radio (if applicable)"];
 
 //INVENTORY VARIABLES:
 var Player = {//Inventory names
@@ -23,7 +22,7 @@ var Player = {//Inventory names
 	//Populates the command textbox datalist
 	function populate_CmdList() {
 		var txtCommand_list = document.getElementById("txtCommand_list");
-		for (i = 0; i < Gameplay.cmd.length; i++) {
+		for (i = 0, len = Gameplay.cmd.length; i < len; i++) {
 			var txtCommand_item = document.createElement("option");	
 			var cmd_name = capitaliseFirstLetter(Gameplay.cmd[i]);
 			
@@ -55,7 +54,7 @@ var Player = {//Inventory names
 			}
 		}
 		else {
-			for (i = 0; i < arguments.length; i++) {
+			for (i = 0, len = arguments.length; i < len; i++) {
 				btn_ = document.getElementById(arguments[i]);
 				if (btn_.disabled === false) {
 					btn_.disabled = true;
@@ -76,7 +75,7 @@ var Player = {//Inventory names
 			}
 		}
 		else {
-			for (i = 0; i < arguments.length; i++) {
+			for (i = 0, len = arguments.length; i < len; i++) {
 				btn_ = document.getElementById(arguments[i]);
 				if (btn_.disabled === true) {
 					btn_.disabled = false;
@@ -186,7 +185,10 @@ var Player = {//Inventory names
 		}
 		if (type === 0) {
 			if (num === 0) {
-				msg_box.value = message[num] + loc[current_loc].loc_name + "\n\n" + loc[current_loc].loc_desc_used() + "\n\n\n" + msg_box.value;
+				msg_box.value = message[num] + loc[current_loc].loc_name + "\n\n" + loc[current_loc].loc_desc() + "\n\n\n" + msg_box.value;
+			}
+			else if (num === 1) {
+				msg_box.value = message[num];
 			}
 			else if (num === 9) {
 				msg_box.value = message[num];
@@ -319,6 +321,10 @@ var Player = {//Inventory names
 				loc[locx].loc_desc0 = loc[locx].loc_desc_alt;
 				loc[locx].loc_desc1 = loc[locx].loc_desc_alt;
 				break;
+			case 10:
+				loc[locx].loc_desc1 = loc[locx].loc_desc_alt;
+				loc[locx].loc_desc2 = loc[locx].loc_desc_alt;
+				break;
 		}
 	}
 	
@@ -362,7 +368,7 @@ function initialize_page() {
 	//Executes on look command
 	function cmd_Look() {
 		var msg_box = document.getElementById("ta_Main");
-		msg_box.value = loc[current_loc].loc_desc_used() + "\n\n" + msg_box.value;
+		msg_box.value = loc[current_loc].loc_desc() + "\n\n" + msg_box.value;
 	}
 
 	//Executes on take command
@@ -377,19 +383,26 @@ function initialize_page() {
 					break;
 				}
 			case 1:
-				if (loc[current_loc].loc_desc_used() != loc[current_loc].loc_desc_alt) {
+				if (loc[current_loc].loc_desc() != loc[current_loc].loc_desc_alt) {
 					update_display_msg(3);
 					edit_desc(current_loc);
 					Player.inventory_q[0]++;
 					break;
 				}
 			case 6:
-				if ((loc[current_loc].loc_visited > 1) && (loc[current_loc].loc_desc_used() != loc[current_loc].loc_desc_alt)) {
+				if ((loc[current_loc].loc_visited > 1) && (loc[current_loc].loc_desc() != loc[current_loc].loc_desc_alt)) {
 					update_display_msg(2);
 					edit_desc(current_loc);
 					Player.inventory_q[1]++;
 					break;
 				}
+			case 10:
+				if (loc[current_loc].loc_desc() != loc[current_loc].loc_desc_alt) {
+					update_display_msg(2);
+					edit_desc(current_loc);
+					Player.inventory_q[1]++
+				}
+				break;
 			default:
 				gameplayError(0);
 		}
@@ -437,7 +450,14 @@ function initialize_page() {
 
 	//Executes on help command
 	function cmd_Help() {
-		
+		var cmd_list = "";
+		var msg_box = document.getElementById("ta_Main");
+		var txt_Command = document.getElementById("txtCommand");
+		for (i = (Gameplay.cmd.length - 1); i >= 0; i--) {
+			cmd_list = Gameplay.cmd[i] + " - " + Gameplay.cmd_desc[i] + "\n" + cmd_list;
+		}
+		msg_box.value = "HELP: \n" + cmd_list + "\n" + loc[current_loc].loc_desc() + "\n\n" + msg_box.value;
+		txtCommand.value = "";
 	}
 
 	//Executes on eat command
@@ -449,7 +469,7 @@ function initialize_page() {
 			Player.inventory_q[0]--;
 		}
 		//Otherwise if player is currently in the dining room and does not have any food in inventory, eat directly
-		else if ((current_loc === 1) && (loc[current_loc].loc_desc_used() != loc[current_loc].loc_desc_alt) && (Player.inventory_q[0] == 0)) {
+		else if ((current_loc === 1) && (loc[current_loc].loc_desc() != loc[current_loc].loc_desc_alt) && (Player.inventory_q[0] == 0)) {
 			update_display_msg(8);
 			edit_desc(current_loc);
 		}
@@ -462,15 +482,22 @@ function initialize_page() {
 	function cmd_Inventory_check() {
 		var inv_list = "";
 		var msg_box = document.getElementById("ta_Main");
-		for (i = 0; i < Player.inventory.length; i++) {
-			inv_list = capitaliseFirstLetter(Player.inventory[i]).toString() + " = " + Player.inventory_q[i].toString() + "\n" + inv_list;
+		for (i = 0, len = Player.inventory.length; i < len; i++) {
+			if (Player.inventory_q[i] != 0) {
+				inv_list = capitaliseFirstLetter(Player.inventory[i]).toString() + " = " + Player.inventory_q[i].toString() + "\n" + inv_list;
+			}
 		}
-		msg_box.value = "INVENTORY: \n" + inv_list + "\n\n" + msg_box.value;
+		if (inv_list != "") {
+			msg_box.value = "INVENTORY: \n" + inv_list + "\n\n" + msg_box.value;
+		}
+		else {
+			msg_box.value = "INVENTORY: \n" + "You have no items in your inventory \n\n" + msg_box.value;
+		}
 	}
 
 	//Executed on climb command
 	function cmd_Climb() {
-		if ((current_loc === 3) && (loc[current_loc].loc_desc_used() === loc[current_loc].loc_desc_alt)) {
+		if ((current_loc === 3) && (loc[current_loc].loc_desc() === loc[current_loc].loc_desc_alt)) {
 			player_Win();
 		}
 		else {
@@ -502,8 +529,8 @@ function param_change() {
 	update_Loc();
 	update_Map(1);
 	update_Points();
-	loc[current_loc].loc_visited++;
 	update_display_msg(0);
+	loc[current_loc].loc_visited++;
 	btn_set();
 	
 	if ((loc[current_loc].loc_visited > 1) && (current_loc === 7) && (loc[current_loc].loc_desc2 != loc[current_loc].loc_desc_alt)) {
@@ -685,6 +712,19 @@ function param_change() {
 		}
 	}
 
+	function cmd_Cheatmode() {
+		Gameplay.cheatmode = 1;
+	}
+	
+	function cmd_Sarcasm() {
+	}
+	
+	function cmd_wman() {
+	}
+	
+	function cmd_007() {
+	}
+	
 	//Enter button function
 	function btnEnter_click() {
 		var msg_box = document.getElementById("ta_Main");
@@ -744,6 +784,18 @@ function param_change() {
 				break;
 			case 12:
 				cmd_Listen();
+				break;
+			case 13:
+				cmd_Cheatmode();
+				break;
+			case 14:
+				cmd_Sarcasm();
+				break;
+			case 15:
+				cmd_wman();
+				break;
+			case 16:
+				cmd_007();
 				break;
 			default:
 				gameplayError(5);
